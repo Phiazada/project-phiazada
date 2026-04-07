@@ -23,6 +23,28 @@ O **Project Phiazada** é uma plataforma para gerenciar usuários, jogos e torne
 
 ---
 
+## 🏗️ Arquitetura
+
+O projeto utiliza arquitetura de **microserviços** com um API Gateway central roteando as chamadas entre os serviços.
+
+```
+Gateway
+├── users-service       → MongoDB
+├── jogos-service       → MongoDB
+├── torneios-service    → MariaDB
+└── pareamento-service  → MariaDB
+```
+
+| Serviço | Banco | Descrição |
+|---|---|---|
+| users | MongoDB | Usuários, ranks, amizades |
+| jogos | MongoDB | Catálogo de jogos |
+| torneios | MariaDB | Torneios, pontos, reset mensal |
+| pareamento | MariaDB | Pareamento de partidas e resultados |
+| gateway | — | Roteamento central de todas as APIs |
+
+---
+
 ## 📦 CRUDs
 
 ### 👤 CRUD de Usuários
@@ -67,31 +89,32 @@ O **Project Phiazada** é uma plataforma para gerenciar usuários, jogos e torne
 
 ## 🗺️ Roadmap
 
-- [ ] Definir estrutura do banco de dados
+- [x] Definir estrutura do banco de dados
 - [ ] Subir VM com Windows Server no Azure
 - [ ] Configurar MongoDB + MariaDB na VM
-- [ ] Configurar ambiente local com Docker
-- [ ] Desenvolver CRUD de Usuários
-- [ ] Desenvolver CRUD de Games
-- [ ] Desenvolver CRUD de Torneios
+- [~] Configurar ambiente local com Docker *(em progresso)*
+- [x] Desenvolver CRUD de Usuários
+- [x] Desenvolver CRUD de Games
+- [x] Desenvolver CRUD de Torneios
 - [ ] Implementar sistema de ranks
 - [ ] Implementar sistema de torneios
+- [ ] Montar API Gateway
 - [ ] Configurar CI/CD com GitHub Actions
 - [ ] Testes automatizados
 - [ ] Deploy final no Azure
 
 ---
 
-## 📁 Estrutura do Repositório
+## 📁 Repositórios
 
-```
-project-phiazada/
-├── docs/          # Documentação técnica
-├── infra/         # Scripts de infra, Azure, Windows Server
-├── backend/       # Código do back-end (Node.js + TypeScript)
-├── frontend/      # Código do front-end (React + TypeScript)
-└── tests/         # Testes automatizados
-```
+| Repositório | Descrição |
+|---|---|
+| [infra](https://github.com/Phiazada/infra) | Docker com MongoDB e MariaDB |
+| [gateway](https://github.com/Phiazada/gateway) | API Gateway central |
+| [users](https://github.com/Phiazada/users) | API de usuários |
+| [jogos](https://github.com/Phiazada/jogos) | API de jogos |
+| [torneios](https://github.com/Phiazada/torneios) | API de torneios |
+| [pareamento](https://github.com/Phiazada/pareamento) | API de pareamento de partidas |
 
 ---
 
@@ -107,3 +130,4 @@ project-phiazada/
 ## 🔗 Links
 
 - [Notion do Projeto](https://www.notion.so/Projeto-Cfs-Phiazada-33bc57f4dcdd80b6ada2fef8d322b8a5)
+- [Organização GitHub](https://github.com/Phiazada)
