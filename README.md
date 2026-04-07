@@ -15,10 +15,11 @@ O **Project Phiazada** é uma plataforma para gerenciar usuários, jogos e torne
 | Camada | Tecnologia |
 |---|---|
 | Infra | Windows Server + Azure |
-| Banco de Dados | MongoDB |
+| Banco de Dados | MongoDB + MariaDB |
+| Back-end | Node.js com TypeScript |
+| Front-end | React com TypeScript |
+| Dev local | Docker |
 | CI/CD | GitHub Actions |
-| Back-end | A definir (Node.js recomendado) |
-| Front-end | A definir |
 
 ---
 
@@ -56,8 +57,9 @@ O **Project Phiazada** é uma plataforma para gerenciar usuários, jogos e torne
 | Windows Server | ✅ Lidera | ✅ Aprende junto |
 | Azure (VM, redes) | ✅ Lidera | ✅ Aprende junto |
 | CI/CD (GitHub Actions) | ✅ Configura | Usa |
-| Back-end da aplicação | ✅ Ajuda | ✅ Lidera |
-| Banco de dados (MongoDB) | Configura infra | ✅ Modelagem/queries |
+| Back-end (Node.js + TS) | ✅ Ajuda | ✅ Lidera |
+| Banco de dados | Configura infra | ✅ Modelagem/queries |
+| Front-end (React + TS) | — | ✅ Lidera |
 | Testes automatizados | — | ✅ Principal |
 | Sistema de ranks/pontos | Apoio | ✅ Lidera |
 
@@ -65,9 +67,10 @@ O **Project Phiazada** é uma plataforma para gerenciar usuários, jogos e torne
 
 ## 🗺️ Roadmap
 
-- [ ] Definir stack de back/front
+- [ ] Definir estrutura do banco de dados
 - [ ] Subir VM com Windows Server no Azure
-- [ ] Configurar MongoDB na VM
+- [ ] Configurar MongoDB + MariaDB na VM
+- [ ] Configurar ambiente local com Docker
 - [ ] Desenvolver CRUD de Usuários
 - [ ] Desenvolver CRUD de Games
 - [ ] Desenvolver CRUD de Torneios
@@ -75,7 +78,7 @@ O **Project Phiazada** é uma plataforma para gerenciar usuários, jogos e torne
 - [ ] Implementar sistema de torneios
 - [ ] Configurar CI/CD com GitHub Actions
 - [ ] Testes automatizados
-- [ ] Deploy final
+- [ ] Deploy final no Azure
 
 ---
 
@@ -85,8 +88,8 @@ O **Project Phiazada** é uma plataforma para gerenciar usuários, jogos e torne
 project-phiazada/
 ├── docs/          # Documentação técnica
 ├── infra/         # Scripts de infra, Azure, Windows Server
-├── backend/       # Código do back-end
-├── frontend/      # Código do front-end
+├── backend/       # Código do back-end (Node.js + TypeScript)
+├── frontend/      # Código do front-end (React + TypeScript)
 └── tests/         # Testes automatizados
 ```
 
@@ -97,4 +100,10 @@ project-phiazada/
 | Membro | Papel |
 |---|---|
 | Dherick | QA / Dev |
-| A definir | Infra / SRE |
+| Arthur | Infra / SRE |
+
+---
+
+## 🔗 Links
+
+- [Notion do Projeto](https://www.notion.so/Projeto-Cfs-Phiazada-33bc57f4dcdd80b6ada2fef8d322b8a5)
