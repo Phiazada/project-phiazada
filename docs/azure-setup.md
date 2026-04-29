@@ -18,6 +18,40 @@ Documentação completa do processo de configuração da infraestrutura no Micro
 
 ---
 
+## 💰 Controle de Custos
+
+> ⚠️ **A VM é cobrada por hora enquanto estiver ligada.** Sempre desligue ao terminar de usar para economizar créditos.
+
+### Ligar a VM
+```bash
+az vm start --resource-group rg-phiazada --name vm-phiazada
+```
+
+### Desligar a VM (deallocate — para cobrança)
+```bash
+az vm deallocate --resource-group rg-phiazada --name vm-phiazada
+```
+
+> ⚠️ Use sempre `deallocate` e não `stop`. O `stop` mantém o IP alocado e **continua cobrando** a VM. O `deallocate` libera todos os recursos e **para a cobrança** da VM.
+
+### Verificar status
+```bash
+az vm show --resource-group rg-phiazada --name vm-phiazada --query powerState
+```
+
+### Estimativa de Custo Mensal
+
+| Recurso | Custo/hora | 24h×7 (mês) | 8h×dias úteis | 4h×dias úteis |
+|---|---|---|---|---|
+| VM `Standard_D2as_v4` (Windows) | ~$0,23 | ~$168 | ~$37 | ~$18 |
+| Disco OS (128GB SSD) | — | ~$15 | ~$15 | ~$15 |
+| IP Público Standard | — | ~$4 | ~$4 | ~$4 |
+| **Total estimado** | | **~$187/mês** | **~$56/mês** | **~$37/mês** |
+
+> 💡 **Disco e IP são cobrados mesmo com a VM desligada.** Apenas o custo da VM para com o `deallocate`.
+
+---
+
 ## ✅ Passo a Passo
 
 ### Passo 1 — Criar o Resource Group ✅
@@ -76,11 +110,6 @@ rg-phiazada      VM running    4.201.216.92       10.0.0.4            brazilsout
 | **IP Privado** | `10.0.0.4` |
 | **Status** | `VM running` |
 
-> 💡 Para economizar créditos, desligue a VM quando não estiver usando:
-> ```bash
-> az vm deallocate --resource-group rg-phiazada --name vm-phiazada
-> ```
-
 ---
 
 ### Passo 3 — Liberar porta RDP (3389) ✅
@@ -108,7 +137,7 @@ az vm open-port \
 
 ### Passo 4 — Configurar Network Security Group (NSG) ✅
 
-O **NSG (Network Security Group)** controla o tráfego de entrada e saída da VM. Para aumentar a segurança, a regra de RDP foi restringida para aceitar conexões **apenas dos IPs autorizados** da equipe.
+O **NSG** controla o tráfego de entrada e saída da VM. A regra de RDP foi restringida para aceitar conexões **apenas dos IPs autorizados** da equipe.
 
 ```bash
 az network nsg rule update \
@@ -120,10 +149,10 @@ az network nsg rule update \
 
 | Usuário | Acesso |
 |---|---|
-| Arthur | ✅ IP autorizado |
-| Dherick | ✅ IP autorizado |
+| **Arthur** | ✅ IP autorizado |
+| **Dherick** | ✅ IP autorizado |
 
-> 🔒 **Segurança:** apenas os IPs da equipe conseguem conectar via RDP. Qualquer outra origem é bloqueada pelo NSG.
+> 🔒 Apenas os IPs da equipe conseguem conectar via RDP. Qualquer outra origem é bloqueada pelo NSG.
 
 ---
 
