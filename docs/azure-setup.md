@@ -50,6 +50,8 @@ az vm show --resource-group rg-phiazada --name vm-phiazada --query powerState
 
 > 💡 **Disco e IP são cobrados mesmo com a VM desligada.** Apenas o custo da VM para com o `deallocate`.
 
+> 🇧🇷 **Em reais (BRL):** Considerando ~R$5,00 por dólar, o uso de **4h×dias úteis** fica em torno de **~R$185/mês**. Valor variável conforme o câmbio do dia.
+
 ---
 
 ## ✅ Passo a Passo
