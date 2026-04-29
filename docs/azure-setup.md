@@ -28,7 +28,7 @@ O **Resource Group** é um contêiner lógico no Azure que agrupa todos os recur
 az group create --name rg-phiazada --location brazilsouth
 ```
 
-**Resultado esperado:**
+**Resultado:**
 ```
 Name         Location     Status
 -----------  -----------  ---------
@@ -42,11 +42,13 @@ rg-phiazada  brazilsouth  Succeeded
 
 ---
 
-### Passo 2 — Criar a VM Windows Server
+### Passo 2 — Criar a VM Windows Server ✅
 
 A **Virtual Machine (VM)** é o servidor principal do projeto. Escolhemos o **Windows Server 2022 Datacenter** por ser a versão mais recente e estável, com suporte completo a Docker e todas as ferramentas que utilizaremos.
 
-O tamanho `Standard_B2s` oferece **2 vCPUs e 4GB de RAM**, suficiente para o ambiente de estudos com bom custo-benefício.
+O tamanho `Standard_D2as_v4` oferece **2 vCPUs e 8GB de RAM** com processador AMD, com melhor custo-benefício para o ambiente de estudos.
+
+> ⚠️ O tamanho `Standard_B2s` não estava disponível na região `brazilsouth`. Utilizamos o `Standard_D2as_v4` como alternativa.
 
 ```bash
 az vm create \
@@ -55,25 +57,52 @@ az vm create \
   --image Win2022Datacenter \
   --admin-username adminphiazada \
   --admin-password "Phiazada@2026" \
-  --size Standard_B2s \
+  --size Standard_D2as_v4 \
   --location brazilsouth \
   --public-ip-sku Standard \
   --output table
 ```
 
-| Parâmetro | Valor | Descrição |
-|---|---|---|
-| `--resource-group` | `rg-phiazada` | Grupo de recursos onde a VM será criada |
-| `--name` | `vm-phiazada` | Nome da VM |
-| `--image` | `Win2022Datacenter` | Windows Server 2022 Datacenter |
-| `--admin-username` | `adminphiazada` | Usuário administrador da VM |
-| `--size` | `Standard_B2s` | 2 vCPUs, 4GB RAM |
-| `--location` | `brazilsouth` | Mesma região do Resource Group |
-| `--public-ip-sku` | `Standard` | IP público estático para acesso RDP |
+**Resultado:**
+```
+ResourceGroup    PowerState    PublicIpAddress    PrivateIpAddress    Location
+---------------  ------------  -----------------  ------------------  -----------
+rg-phiazada      VM running    4.201.216.92       10.0.0.4            brazilsouth
+```
+
+| Recurso | Valor |
+|---|---|
+| **IP Público** | `4.201.216.92` |
+| **IP Privado** | `10.0.0.4` |
+| **Status** | `VM running` |
+
+> 💡 Para economizar créditos, desligue a VM quando não estiver usando:
+> ```bash
+> az vm deallocate --resource-group rg-phiazada --name vm-phiazada
+> ```
 
 ---
 
-### Passo 3 — Liberar porta RDP (3389) *(em breve)*
+### Passo 3 — Liberar porta RDP (3389) ⏳ *em progresso*
+
+O **RDP (Remote Desktop Protocol)** é o protocolo que permite acessar a interface gráfica do Windows Server remotamente. A porta **3389** precisa estar aberta no firewall da VM para que a conexão seja possível.
+
+```bash
+az vm open-port \
+  --resource-group rg-phiazada \
+  --name vm-phiazada \
+  --port 3389 \
+  --priority 100
+```
+
+| Parâmetro | Valor | Descrição |
+|---|---|---|
+| `--resource-group` | `rg-phiazada` | Grupo de recursos da VM |
+| `--name` | `vm-phiazada` | Nome da VM |
+| `--port` | `3389` | Porta do protocolo RDP |
+| `--priority` | `100` | Prioridade da regra no NSG |
+
+---
 
 ### Passo 4 — Configurar Network Security Group (NSG) *(em breve)*
 
@@ -85,10 +114,20 @@ az vm create \
 
 ## 📌 Recursos Criados
 
-| Recurso | Nome | Região |
-|---|---|---|
-| Resource Group | `rg-phiazada` | Brazil South |
-| Virtual Machine | `vm-phiazada` | Brazil South |
+| Recurso | Nome | Região | Detalhes |
+|---|---|---|---|
+| Resource Group | `rg-phiazada` | Brazil South | — |
+| Virtual Machine | `vm-phiazada` | Brazil South | IP: `4.201.216.92` |
+
+---
+
+## ⏳ Próximos Passos
+
+- [ ] Configurar acesso RDP
+- [ ] Configurar Network Security Group (NSG)
+- [ ] Instalar Docker na VM
+- [ ] Configurar CI/CD com GitHub Actions
+- [ ] Deploy da aplicação
 
 ---
 
