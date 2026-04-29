@@ -20,7 +20,7 @@ Documentação completa do processo de configuração da infraestrutura no Micro
 
 ## ✅ Passo a Passo
 
-### Passo 1 — Criar o Resource Group
+### Passo 1 — Criar o Resource Group ✅
 
 O **Resource Group** é um contêiner lógico no Azure que agrupa todos os recursos relacionados a um projeto (VMs, redes, discos, IPs, etc.). Ele facilita o gerenciamento, monitoramento e exclusão em conjunto de todos os recursos do projeto.
 
@@ -83,9 +83,9 @@ rg-phiazada      VM running    4.201.216.92       10.0.0.4            brazilsout
 
 ---
 
-### Passo 3 — Liberar porta RDP (3389) ⏳ *em progresso*
+### Passo 3 — Liberar porta RDP (3389) ✅
 
-O **RDP (Remote Desktop Protocol)** é o protocolo que permite acessar a interface gráfica do Windows Server remotamente. A porta **3389** precisa estar aberta no firewall da VM para que a conexão seja possível.
+O **RDP (Remote Desktop Protocol)** é o protocolo que permite acessar a interface gráfica do Windows Server remotamente. A porta **3389** foi aberta no firewall da VM.
 
 ```bash
 az vm open-port \
@@ -102,9 +102,30 @@ az vm open-port \
 | `--port` | `3389` | Porta do protocolo RDP |
 | `--priority` | `100` | Prioridade da regra no NSG |
 
+**Acesso confirmado:** conexão RDP estabelecida com sucesso na VM (`4.201.216.92`). Windows Server Manager acessível.
+
 ---
 
-### Passo 4 — Configurar Network Security Group (NSG) *(em breve)*
+### Passo 4 — Configurar Network Security Group (NSG) ✅
+
+O **NSG (Network Security Group)** controla o tráfego de entrada e saída da VM. Para aumentar a segurança, a regra de RDP foi restringida para aceitar conexões **apenas dos IPs autorizados** da equipe.
+
+```bash
+az network nsg rule update \
+  --resource-group rg-phiazada \
+  --nsg-name vm-phiazadaNSG \
+  --name rdp \
+  --source-address-prefixes <IP_ARTHUR> <IP_DHERICK>
+```
+
+| Usuário | Acesso |
+|---|---|
+| Arthur | ✅ IP autorizado |
+| Dherick | ✅ IP autorizado |
+
+> 🔒 **Segurança:** apenas os IPs da equipe conseguem conectar via RDP. Qualquer outra origem é bloqueada pelo NSG.
+
+---
 
 ### Passo 5 — Instalar Docker na VM *(em breve)*
 
@@ -118,13 +139,14 @@ az vm open-port \
 |---|---|---|---|
 | Resource Group | `rg-phiazada` | Brazil South | — |
 | Virtual Machine | `vm-phiazada` | Brazil South | IP: `4.201.216.92` |
+| NSG | `vm-phiazadaNSG` | Brazil South | RDP restrito aos IPs da equipe |
 
 ---
 
 ## ⏳ Próximos Passos
 
-- [ ] Configurar acesso RDP
-- [ ] Configurar Network Security Group (NSG)
+- [x] Configurar acesso RDP
+- [x] Configurar Network Security Group (NSG)
 - [ ] Instalar Docker na VM
 - [ ] Configurar CI/CD com GitHub Actions
 - [ ] Deploy da aplicação
